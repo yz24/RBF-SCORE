@@ -5,7 +5,7 @@ This algorithm finds the optimal shaping parameter and condition number of RBF f
 ## How to run this code?
 It is easy to to do this. 
 1. Go to the `basic_function.py` under the folder "rbf-score". 
-2. Scroll down and find the main function. There is only one line of code that calls the `run_networks()`. You will be required to point out which network/dataset to run. For instance, you would like to run the football.mat data in "/data/datasets", just give a string "football" to the function.
+2. Scroll down and find the `main()` function. There is only one line of code that calls the `run_networks()`. You will be required to point out which network/dataset to run. For instance, you would like to run the football.mat data in "/data/datasets", just give a string "football" to the function.
 3. Then run the code, done!
 
 ## Outputs
