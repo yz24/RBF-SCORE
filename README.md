@@ -5,20 +5,23 @@ This algorithm finds the optimal shaping parameter and condition number of RBF f
 ## How to run this code?
 It is easy to to do this. 
 1. Go to the `basic_function.py` under the folder "rbf-score". 
-2. Scroll down and find the `main()` function. There is only one line of code that calls the `run_networks()`. You will be required to point out which network/dataset to run. For instance, you would like to run the football.mat data in "/data/datasets", just give a string "football" to the function.
-3. Then run the code, done!
+2. Scroll down and find the `main()` function. 
+3. When running on real-world data sets, for instance, you would like to run the football.mat data with a MQ RBF in "/data/datasets", just give a set fn= "football" and RBF='MQ'.
+```python
+ '''
+Run real-world data set
+fn: data name
+RBF: RBFs, {'MQ', 'iMQ', 'gaussian'}
+'''
+data, y, k = import_real_data(fn='football')
+run_networks(data, y, k, RBF='MQ')
+ ```
+6. Then run the code, done!
 
 ## Outputs
-Your will get outputs like this if you run lesmis data
+Your will get outputs like this if you run football data
 ```python
-run_networks(fn='lesmis')
-```
+0.303 289.3264 0.957 0.62
+ ```
 
-```
-c, condition number for optimal NMI - lesmis
-2.449 1.2330039145526659e+20 :  0.751 0.306
-
-c, condition number for optimal Modularity - lesmis
-2.7551 1.8409452761073323e+20 :  0.708 0.423
-```
-As said above, the first two lines of the outputs tell us that if shaping parameter is 2.449, condition number will be 1.23e+20 with NMI=0.751 and Q=0.306. This is for the best NMI. Similarly, the best modularity 0.423 is acquired when shaping setting parameter as 2.7551.
+As said above, the outputs tell us that the optimal shaping parameter is 0.303, condition number will be 289.3264 with NMI=0.957 and Q=0.62.
