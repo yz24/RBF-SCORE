@@ -11,6 +11,9 @@ import scipy.io
 from sklearn.metrics.cluster import normalized_mutual_info_score
 import networkx as nx
 import hSCORE
+import utils.higer_approximation as ha
+import warnings
+warnings.filterwarnings("ignore")
 
 plt.rcParams["font.family"] = "Times New Roman"
 import numpy.matlib
@@ -121,7 +124,7 @@ def SCOREplus(W, k, c=0.1):
     return sp_kmeans.labels_, end - start
 
 
-def run_networks(fn='football', RBF='MQ'):
+def import_real_data(fn):
     # for lesmis
     fnn = "../data/lesmis/"
 
@@ -138,6 +141,44 @@ def run_networks(fn='football', RBF='MQ'):
         W, y = get_mat(folder + fn + '.mat')
         data = W
         k = max(y) - min(y) + 1
+    return data, y, k
+
+
+def import_LFR_data(nn, p1, p2, mu):
+    folder = '../data/LFR/' + str(nn)
+
+    fn = str(mu) + '_' + str(p1) + '_' + str(p2)
+    filename = folder + '/LFR__' + fn
+    # G = nx.read_adjlist(filename+'.adjlist', nodetype=int)
+    label = pd.read_table(filename + '.labels', header=None, sep='\t')
+    W = pd.read_table(filename + '.adj', header=None, sep=' ').to_numpy()
+    l = label.shape[0]
+    y = [label[0][i] for i in range(l)]
+    # W = nx.to_pandas_adjacency(G)
+    # G = nx.from_numpy_matrix(W)
+    data = W
+    # print(len(W))
+    k = max(y) - min(y) + 1
+    return data, y, k
+
+
+def run_networks(data, y, k, RBF='MQ'):
+    # for lesmis
+    # fnn = "../data/lesmis/"
+    #
+    # if fn.strip() == "lesmis":
+    #     data = pd.read_table(fnn + 'lesmis.txt', header=None, sep='\t').to_numpy()
+    #     label = pd.read_table(fnn + 'lesmis_stan.txt', header=None, sep='\t')
+    #     l = label.shape[0]
+    #     y = [label[0][i] for i in range(l)]
+    #     k = len(set(y))
+    #
+    # # for other data
+    # else:
+    #     folder = '../data/datasets/'
+    #     W, y = get_mat(folder + fn + '.mat')
+    #     data = W
+    #     k = max(y) - min(y) + 1
 
     G = networkG(data)
     n = 100
@@ -164,26 +205,50 @@ def run_networks(fn='football', RBF='MQ'):
         w = np.absolute(np.linalg.eigvals(A))
         W = np.dot(A, data)
         # Algorithms
-        # splus, t4 = SCOREplus(W, k, c=0.1)
-        splus, t4 = hSCORE.run_hSCORE(W, k)
+        splus, t4 = SCOREplus(W, k)
 
         condition[i] = np.log2(max(w) / min(w))
         NMI4 = round(get_NMI(y, splus), 3)
         Q4 = round(modularity(splus, G), 3)
         NMI[i] = NMI4
         Q[i] = Q4
-    print("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-"+RBF+"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
-    print("c\tcondition\tNMI\tQ")
-    print("c, condition number for optimal NMI - " + fn.split('.')[0])
+    # print("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-"+RBF+"*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-")
+    # print("c\tcondition\tNMI\tQ")
+    # print("c, condition number for optimal NMI ")
     q = NMI.index(max(NMI))
-    print(round(c[q], 4), round(2 ** condition[q], 4), ": ", NMI[q], Q[q])
-
-    print("\nc, condition number for optimal Modularity - " + fn.split('.')[0])
-    q = Q.index(max(Q))
-    print(round(c[q], 4), round(2 ** condition[q], 4), ": ", NMI[q], Q[q])
+    # print(round(c[q], 4), round(2 ** condition[q], 4), NMI[q], Q[q])
+    #
+    # print("\nc, condition number for optimal Modularity - ")
+    # q = Q.index(max(Q))
+    print(round(c[q], 4), round(2 ** condition[q], 4), NMI[q], Q[q])
 
     # plotNMIQ(condition, NMI, Q, fn.split('.')[0])
 
 
 if __name__ == "__main__":
-    run_networks(fn='lesmis', RBF='MQ')
+    '''
+    Run real-world data set
+    fn: data name
+    RBF: RBFs, {'MQ', 'iMQ', 'gaussian'}
+    '''
+    # data, y, k = import_real_data(fn='karate')
+    # run_networks(data, y, k, RBF='MQ')
+    
+    '''
+    Run synthetic data set for a specific # Node, p1, p2 on all mu
+    '''
+    # 
+    # nn, p1, p2 = 80, 5, 5
+    # nn, p1, p2 = 100, 10, 5
+    # nn, p1, p2 = 120, 10, 5
+    # nn, p1, p2 = 150, 10, 10
+    # nn, p1, p2 = 300, 15, 10
+    # nn, p1, p2 = 500, 15, 15
+    nn, p1, p2 = 800, 20, 15
+    for mu in [0.15, 0.25, 0.35, 0.45, 0.55, 0.65, 0.75, 0.85]:
+        data, y, k = import_LFR_data(nn, p1, p2, mu)
+        run_networks(data, y, k, RBF='MQ')
+        # run_networks(data, y, k, RBF='gaussian')
+    # run_networks(data, y, k, RBF='iMQ')
+    # run_networks(data, y, k, RBF='gaussian')
+
