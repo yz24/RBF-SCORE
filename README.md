@@ -16,7 +16,7 @@ RBF: RBFs, {'MQ', 'iMQ', 'gaussian'}
 data, y, k = import_real_data(fn='football')
 run_networks(data, y, k, RBF='MQ')
  ```
-6. Then run the code, done!
+4. Then run the code, done!
 
 ## Outputs
 Your will get outputs like this if you run football data
@@ -24,4 +24,4 @@ Your will get outputs like this if you run football data
 0.303 289.3264 0.957 0.62
  ```
 
-As said above, the outputs tell us that the optimal shaping parameter is 0.303, condition number will be 289.3264 with NMI=0.957 and Q=0.62.
+The outputs tell us that the optimal shaping parameter is 0.303, condition number will be 289.3264 with NMI=0.957 and Q=0.62.
