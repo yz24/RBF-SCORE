@@ -24,10 +24,12 @@ Your will get outputs like this if you run `football` data.
  ```
 The outputs tell us that the optimal shaping parameter is 0.303 and the corresponding condition number will be 289.3264, with NMI = 0.957 and Q = 0.62.
 
-Please cite:
+If you use this code, please cite:
+```
 @article{zhu2023scoreh+,
   title={SCOREH+: A High-Order Node Proximity Spectral Clustering on Ratios-of-Eigenvectors Algorithm for Community Detection},
   author={Zhu, Yanhui and Hu, Fang and Kuo, Lei Hsin and others},
   journal={arXiv preprint arXiv:2301.02885},
   year={2023}
 }
+```
