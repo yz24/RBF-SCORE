@@ -26,10 +26,14 @@ The outputs tell us that the optimal shaping parameter is 0.303 and the correspo
 
 If you use this code, please cite:
 ```
-@article{zhu2023scoreh+,
-  title={SCOREH+: A High-Order Node Proximity Spectral Clustering on Ratios-of-Eigenvectors Algorithm for Community Detection},
-  author={Zhu, Yanhui and Hu, Fang and Kuo, Lei Hsin and others},
-  journal={arXiv preprint arXiv:2301.02885},
-  year={2023}
-}
+@ARTICLE{10373106,
+  author={Zhu, Yanhui and Hu, Fang and Kuo, Lei Hsin and Liu, Jia},
+  journal={IEEE Transactions on Big Data}, 
+  title={SCOREH+: A High-Order Node Proximity Spectral Clustering on Ratios-of-Eigenvectors Algorithm for Community Detection}, 
+  year={2023},
+  volume={},
+  number={},
+  pages={1-12},
+  doi={10.1109/TBDATA.2023.3346715}}
+
 ```
